@@ -33,7 +33,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/streak", streakRoutes);
 
-app.get("/api/protected", authMiddleware, (req, res) => {
+app.get("/api/protected",authMiddleware, (req, res) => {
     res.json({
         message: "You accessed a protected route",
         userId: req.userId

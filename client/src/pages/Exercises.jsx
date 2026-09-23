@@ -51,9 +51,7 @@ const Exercises = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         setError("");
-
         try {
             if (editingId) {
                 await api.put(
@@ -63,7 +61,6 @@ const Exercises = () => {
             } else {
                 await api.post("/exercises", formData);
             }
-
             resetForm();
             fetchExercises();
         } catch (error) {
@@ -76,7 +73,6 @@ const Exercises = () => {
 
     const handleEdit = (exercise) => {
         setEditingId(exercise._id);
-
         setFormData({
             name: exercise.name,
             category: exercise.category,
@@ -88,11 +84,9 @@ const Exercises = () => {
         const confirmed = window.confirm(
             "Are you sure you want to delete this exercise?"
         );
-
         if (!confirmed) {
             return;
         }
-
         try {
             await api.delete(`/exercises/${id}`);
             fetchExercises();
@@ -107,19 +101,15 @@ const Exercises = () => {
     return (
         <>
             <Navbar />
-
             <main>
                 <h1>Exercise Management</h1>
-
                 {error && <p>{error}</p>}
-
                 <section>
                     <h2>
                         {editingId
                             ? "Edit Exercise"
                             : "Add Exercise"}
                     </h2>
-
                     <form onSubmit={handleSubmit}>
                         <div>
                             <label>Name</label>
@@ -132,7 +122,6 @@ const Exercises = () => {
                                 required
                             />
                         </div>
-
                         <div>
                             <label>Category</label>
                             <input
@@ -144,7 +133,6 @@ const Exercises = () => {
                                 required
                             />
                         </div>
-
                         <div>
                             <label>Description</label>
                             <textarea
@@ -154,13 +142,11 @@ const Exercises = () => {
                                 placeholder="Exercise description"
                             />
                         </div>
-
                         <button type="submit">
                             {editingId
                                 ? "Update Exercise"
                                 : "Add Exercise"}
                         </button>
-
                         {editingId && (
                             <button
                                 type="button"
@@ -171,10 +157,8 @@ const Exercises = () => {
                         )}
                     </form>
                 </section>
-
                 <section>
                     <h2>Your Exercises</h2>
-
                     {loading ? (
                         <p>Loading exercises...</p>
                     ) : exercises.length === 0 ? (
@@ -183,17 +167,14 @@ const Exercises = () => {
                         exercises.map((exercise) => (
                             <div key={exercise._id}>
                                 <h3>{exercise.name}</h3>
-
                                 <p>
                                     Category: {exercise.category}
                                 </p>
-
                                 {exercise.description && (
                                     <p>
                                         {exercise.description}
                                     </p>
                                 )}
-
                                 <div className="button-group">
                                     <button
                                         onClick={() =>

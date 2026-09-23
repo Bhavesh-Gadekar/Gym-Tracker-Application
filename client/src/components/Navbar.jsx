@@ -15,7 +15,6 @@ const Navbar = () => {
             <Link to="/dashboard">
                 <strong>🏋️ Gym Tracker</strong>
             </Link>
-
             <div>
                 <Link to="/dashboard">📊 Dashboard</Link>
                 <Link to="/exercises">💪 Exercises</Link>
@@ -23,10 +22,8 @@ const Navbar = () => {
                 <Link to="/progress">📈 Progress</Link>
                 <Link to="/streak">🔥 Streak</Link>
             </div>
-
             <div>
                 {user && <span>Hi, {user.name} 👋</span>}
-
                 <button onClick={handleLogout}>
                     🚪 Logout
                 </button>

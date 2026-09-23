@@ -12,59 +12,35 @@ import Streak from "./pages/Streak.jsx";
 const App = () => {
     return (
         <Routes>
-            <Route
-                path="/"
-                element={<Navigate to="/login" replace />}
-            />
-
+            <Route path="/" element={<Navigate to="/login" replace />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-
-            <Route
-                path="/dashboard"
-                element={
+            <Route path="/dashboard" element={
                     <ProtectedRoute>
                         <Dashboard />
                     </ProtectedRoute>
-                }
-            />
-
-            <Route
-                path="*"
-                element={<Navigate to="/login" replace />}
-            />
-            <Route
-                path="/exercises"
-                element={
-                <ProtectedRoute>
-                  <Exercises />
-                </ProtectedRoute>}/>
-
-            <Route
-    path="/workouts"
-    element={
-        <ProtectedRoute>
-            <Workouts />
-        </ProtectedRoute>
-    }
-/>
-        <Route
-    path="/progress"
-    element={
-        <ProtectedRoute>
-            <Progress />
-        </ProtectedRoute>
-    }
-/>
-          <Route
-    path="/streak"
-    element={
-        <ProtectedRoute>
-            <Streak />
-        </ProtectedRoute>
-    }
-/>
-        </Routes>
+            }/>
+            <Route path="*" element={<Navigate to="/login" replace />}/>
+            <Route path="/exercises" element={
+                    <ProtectedRoute>
+                        <Exercises />
+                    </ProtectedRoute>}/>
+            <Route path="/workouts" element={
+                    <ProtectedRoute>
+                        <Workouts />
+                    </ProtectedRoute>
+            }/>
+            <Route path="/progress" element={
+                    <ProtectedRoute>
+                        <Progress />
+                    </ProtectedRoute>
+            }/>
+            <Route path="/streak" element={
+                    <ProtectedRoute>
+                        <Streak />
+                    </ProtectedRoute>
+            }/>
+            </Routes>
     );
 };
 

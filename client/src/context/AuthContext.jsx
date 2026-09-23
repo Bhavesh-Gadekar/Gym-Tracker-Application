@@ -18,14 +18,12 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-
         checkAuth();
     }, []);
 
     const login = (userData) => {
         setUser(userData);
     };
-
     const logout = async () => {
     try {
         await api.post("/auth/logout");
@@ -33,7 +31,6 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     }
 };
-
     return (
         <AuthContext.Provider
             value={{user,login,logout,loading}}>

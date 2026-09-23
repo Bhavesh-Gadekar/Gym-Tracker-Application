@@ -89,17 +89,15 @@ export const loginUser=async(req,res) => {
 };
 
 export const getCurrentUser = async (req, res) => {
-    try {
-        const user = await User.findById(req.userId).select(
+    try{
+        const user=await User.findById(req.userId).select(
             "_id name email"
         );
-
-        if (!user) {
+        if(!user){
             return res.status(404).json({
                 message: "User not found"
             });
         }
-
         res.json({
             user: {
                 id: user._id,
@@ -107,7 +105,7 @@ export const getCurrentUser = async (req, res) => {
                 email: user.email
             }
         });
-    } catch (error) {
+    }catch(error){
         res.status(500).json({
             message: "Server error",
             error: error.message
@@ -121,7 +119,6 @@ export const logoutUser = (req, res) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     });
-
     res.json({
         message: "Logout successful"
     });
