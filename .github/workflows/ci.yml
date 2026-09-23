@@ -74,6 +74,4 @@ jobs:
         run: docker build -t gym-tracker-server ./server
 
       - name: Build frontend Docker image
-        run: docker build \
-          --build-arg VITE_API_URL=http://localhost:5000/api \
-          -t gym-tracker-client ./client
+        run: docker build --build-arg VITE_API_URL=http://localhost:5000/api -t gym-tracker-client ./client
