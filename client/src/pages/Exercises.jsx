@@ -194,21 +194,23 @@ const Exercises = () => {
                                     </p>
                                 )}
 
-                                <button
-                                    onClick={() =>
-                                        handleEdit(exercise)
-                                    }
-                                >
-                                    Edit
-                                </button>
+                                <div className="button-group">
+                                    <button
+                                        onClick={() =>
+                                            handleEdit(exercise)
+                                        }
+                                    >
+                                        Edit
+                                    </button>
 
-                                <button
-                                    onClick={() =>
-                                        handleDelete(exercise._id)
-                                    }
-                                >
-                                    Delete
-                                </button>
+                                    <button
+                                        onClick={() =>
+                                            handleDelete(exercise._id)
+                                        }
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         ))
                     )}

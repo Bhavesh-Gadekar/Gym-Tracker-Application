@@ -53,7 +53,7 @@ const Progress = () => {
                     </p>
                 ) : (
                     progress.map((item) => (
-                        <section key={item.exercise._id}>
+                        <section key={item.exercise._id} className="progress-card">
                             <h2>{item.exercise.name}</h2>
 
                             <p>

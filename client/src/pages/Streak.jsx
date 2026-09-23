@@ -35,21 +35,21 @@ const Streak = () => {
             <Navbar />
 
             <main>
-                <h1>Workout Streak</h1>
+                <h1>🔥 Workout Streak</h1>
 
                 {error && <p>{error}</p>}
 
                 {streak && (
-                    <section>
+                    <section className="card-grid streak-grid">
                         <div>
-                            <h2>Current Streak</h2>
+                            <h2>⚡ Current Streak</h2>
                             <p>
                                 {streak.currentStreak} days
                             </p>
                         </div>
 
                         <div>
-                            <h2>Longest Streak</h2>
+                            <h2>🌟 Longest Streak</h2>
                             <p>
                                 {streak.longestStreak} days
                             </p>

@@ -42,56 +42,63 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <h1>Gym Tracker</h1>
-            <h2>Create Account</h2>
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="auth-page">
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h1>🏋️ Gym Tracker</h1>
+                    <p>Create your account to get started.</p>
                 </div>
 
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder="Your name"
+                            required
+                        />
+                    </div>
 
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        minLength={6}
-                        required
-                    />
-                </div>
+                    <div>
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="you@example.com"
+                            required
+                        />
+                    </div>
 
-                {error && <p>{error}</p>}
+                    <div>
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Min. 6 characters"
+                            minLength={6}
+                            required
+                        />
+                    </div>
 
-                <button type="submit" disabled={loading}>
-                    {loading ? "Creating..." : "Register"}
-                </button>
-            </form>
+                    {error && <p className="auth-error">{error}</p>}
 
-            <p>
-                Already have an account?{" "}
-                <Link to="/login">Login</Link>
-            </p>
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Creating..." : "Create Account"}
+                    </button>
+                </form>
+
+                <p className="auth-footer">
+                    Already have an account?{" "}
+                    <Link to="/login">Login</Link>
+                </p>
+            </div>
         </div>
     );
 };

@@ -48,44 +48,50 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <h1>Gym Tracker</h1>
-            <h2>Login</h2>
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="auth-page">
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h1>🏋️ Gym Tracker</h1>
+                    <p>Welcome back! Log in to continue.</p>
                 </div>
 
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="you@example.com"
+                            required
+                        />
+                    </div>
 
-                {error && <p>{error}</p>}
+                    <div>
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
 
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-            </form>
+                    {error && <p className="auth-error">{error}</p>}
 
-            <p>
-                Don't have an account?{" "}
-                <Link to="/register">Register</Link>
-            </p>
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Logging in..." : "Login"}
+                    </button>
+                </form>
+
+                <p className="auth-footer">
+                    Don't have an account?{" "}
+                    <Link to="/register">Register</Link>
+                </p>
+            </div>
         </div>
     );
 };

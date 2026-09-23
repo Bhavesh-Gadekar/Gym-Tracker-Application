@@ -13,22 +13,22 @@ const Navbar = () => {
     return (
         <nav>
             <Link to="/dashboard">
-                <strong>Gym Tracker</strong>
+                <strong>🏋️ Gym Tracker</strong>
             </Link>
 
             <div>
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/exercises">Exercises</Link>
-                <Link to="/workouts">Workouts</Link>
-                <Link to="/progress">Progress</Link>
-                <Link to="/streak">Streak</Link>
+                <Link to="/dashboard">📊 Dashboard</Link>
+                <Link to="/exercises">💪 Exercises</Link>
+                <Link to="/workouts">📝 Workouts</Link>
+                <Link to="/progress">📈 Progress</Link>
+                <Link to="/streak">🔥 Streak</Link>
             </div>
 
             <div>
-                {user && <span>Hi, {user.name}</span>}
+                {user && <span>Hi, {user.name} 👋</span>}
 
                 <button onClick={handleLogout}>
-                    Logout
+                    🚪 Logout
                 </button>
             </div>
         </nav>

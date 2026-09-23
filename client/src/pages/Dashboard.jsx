@@ -33,26 +33,28 @@ const Dashboard = () => {
     return (<>
     <Navbar />
         <div>
-            <h1>Dashboard</h1>
+            <h1>📊 Dashboard</h1>
 
-            <div>
-                <h2>Total Workouts</h2>
-                <p>{stats.totalWorkouts}</p>
-            </div>
+            <div className="card-grid">
+                <div>
+                    <h2>🏆 Total Workouts</h2>
+                    <p>{stats.totalWorkouts}</p>
+                </div>
 
-            <div>
-                <h2>Exercises Performed</h2>
-                <p>{stats.totalExercisesPerformed}</p>
-            </div>
+                <div>
+                    <h2>💪 Exercises Performed</h2>
+                    <p>{stats.totalExercisesPerformed}</p>
+                </div>
 
-            <div>
-                <h2>Total Volume</h2>
-                <p>{stats.totalVolume} kg</p>
-            </div>
+                <div>
+                    <h2>🏋️ Total Volume</h2>
+                    <p>{stats.totalVolume} kg</p>
+                </div>
 
-            <div>
-                <h2>Workouts This Week</h2>
-                <p>{stats.workoutsThisWeek}</p>
+                <div>
+                    <h2>📅 Workouts This Week</h2>
+                    <p>{stats.workoutsThisWeek}</p>
+                </div>
             </div>
         </div>
         </>
