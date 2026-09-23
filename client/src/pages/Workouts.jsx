@@ -2,41 +2,45 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 import api from "../services/api.js";
 
+const createEmptyWorkout = () => ({
+    date: new Date().toISOString().split("T")[0],
+    notes: "",
+    exercises: []
+});
+
 const Workouts = () => {
     const [exercises, setExercises] = useState([]);
     const [workouts, setWorkouts] = useState([]);
 
-    const [formData, setFormData] = useState({
-        date: new Date().toISOString().split("T")[0],
-        notes: "",
-        exercises: []
-    });
+    const [formData, setFormData] =
+        useState(createEmptyWorkout());
 
+    const [editingId, setEditingId] = useState(null);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
+    const fetchData = async () => {
+        try {
+            const [exerciseResponse, workoutResponse] =
+                await Promise.all([
+                    api.get("/exercises"),
+                    api.get("/workouts")
+                ]);
+
+            setExercises(exerciseResponse.data.exercises);
+            setWorkouts(workoutResponse.data.workouts);
+        } catch (error) {
+            setError(
+                error.response?.data?.message ||
+                "Failed to load workout data"
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const loadData = async () => {
-            try {
-                const [exerciseResponse, workoutResponse] =
-                    await Promise.all([
-                        api.get("/exercises"),
-                        api.get("/workouts")
-                    ]);
-
-                setExercises(exerciseResponse.data.exercises);
-                setWorkouts(workoutResponse.data.workouts);
-            } catch (error) {
-                setError(
-                    error.response?.data?.message ||
-                    "Failed to load workout data"
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadData();
+        fetchData();
     }, []);
 
     const handleAddExercise = () => {
@@ -71,7 +75,9 @@ const Workouts = () => {
         value
     ) => {
         setFormData((previous) => {
-            const updatedExercises = [...previous.exercises];
+            const updatedExercises = [
+                ...previous.exercises
+            ];
 
             updatedExercises[exerciseIndex] = {
                 ...updatedExercises[exerciseIndex],
@@ -87,7 +93,9 @@ const Workouts = () => {
 
     const handleAddSet = (exerciseIndex) => {
         setFormData((previous) => {
-            const updatedExercises = [...previous.exercises];
+            const updatedExercises = [
+                ...previous.exercises
+            ];
 
             updatedExercises[exerciseIndex] = {
                 ...updatedExercises[exerciseIndex],
@@ -112,7 +120,9 @@ const Workouts = () => {
         setIndex
     ) => {
         setFormData((previous) => {
-            const updatedExercises = [...previous.exercises];
+            const updatedExercises = [
+                ...previous.exercises
+            ];
 
             updatedExercises[exerciseIndex] = {
                 ...updatedExercises[exerciseIndex],
@@ -137,7 +147,9 @@ const Workouts = () => {
         value
     ) => {
         setFormData((previous) => {
-            const updatedExercises = [...previous.exercises];
+            const updatedExercises = [
+                ...previous.exercises
+            ];
 
             const updatedSets = [
                 ...updatedExercises[exerciseIndex].sets
@@ -158,6 +170,12 @@ const Workouts = () => {
                 exercises: updatedExercises
             };
         });
+    };
+
+    const resetForm = () => {
+        setFormData(createEmptyWorkout());
+        setEditingId(null);
+        setError("");
     };
 
     const handleSubmit = async (e) => {
@@ -191,45 +209,98 @@ const Workouts = () => {
             return;
         }
 
+        const payload = {
+            date: formData.date,
+            notes: formData.notes,
+            exercises: formData.exercises.map(
+                (workoutExercise) => ({
+                    exercise:
+                        workoutExercise.exercise,
+                    sets: workoutExercise.sets.map(
+                        (set) => ({
+                            weight: Number(set.weight),
+                            reps: Number(set.reps)
+                        })
+                    )
+                })
+            )
+        };
+
         try {
-            const payload = {
-                date: formData.date,
-                notes: formData.notes,
-                exercises: formData.exercises.map(
-                    (workoutExercise) => ({
-                        exercise:
-                            workoutExercise.exercise,
-                        sets: workoutExercise.sets.map(
-                            (set) => ({
-                                weight: Number(set.weight),
-                                reps: Number(set.reps)
-                            })
-                        )
-                    })
-                )
-            };
+            if (editingId) {
+                await api.put(
+                    `/workouts/${editingId}`,
+                    payload
+                );
+            } else {
+                await api.post(
+                    "/workouts",
+                    payload
+                );
+            }
 
-            const response = await api.post(
-                "/workouts",
-                payload
-            );
-
-            setWorkouts((previous) => [
-                response.data.workout,
-                ...previous
-            ]);
-
-            setFormData({
-                date: new Date()
-                    .toISOString()
-                    .split("T")[0],
-                notes: "",
-                exercises: []
-            });
+            resetForm();
+            fetchData();
         } catch (error) {
             setError(
                 error.response?.data?.message ||
-                "Failed to create workout"
+                "Failed to save workout"
+            );
+        }
+    };
+
+    const handleEdit = (workout) => {
+        setEditingId(workout._id);
+
+        setFormData({
+            date: new Date(workout.date)
+                .toISOString()
+                .split("T")[0],
+
+            notes: workout.notes || "",
+
+            exercises: workout.exercises.map(
+                (workoutExercise) => ({
+                    exercise:
+                        workoutExercise.exercise._id,
+
+                    sets: workoutExercise.sets.map(
+                        (set) => ({
+                            weight: set.weight,
+                            reps: set.reps
+                        })
+                    )
+                })
+            )
+        });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    };
+
+    const handleDelete = async (id) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this workout?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await api.delete(`/workouts/${id}`);
+
+            if (editingId === id) {
+                resetForm();
+            }
+
+            fetchData();
+        } catch (error) {
+            setError(
+                error.response?.data?.message ||
+                "Failed to delete workout"
             );
         }
     };
@@ -248,7 +319,11 @@ const Workouts = () => {
                 {error && <p>{error}</p>}
 
                 <section>
-                    <h2>Log Workout</h2>
+                    <h2>
+                        {editingId
+                            ? "Edit Workout"
+                            : "Log Workout"}
+                    </h2>
 
                     <form onSubmit={handleSubmit}>
                         <div>
@@ -401,18 +476,18 @@ const Workouts = () => {
                                                     .sets
                                                     .length >
                                                     1 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            handleRemoveSet(
-                                                                exerciseIndex,
-                                                                setIndex
-                                                            )
-                                                        }
-                                                    >
-                                                        Remove Set
-                                                    </button>
-                                                )}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                handleRemoveSet(
+                                                                    exerciseIndex,
+                                                                    setIndex
+                                                                )
+                                                            }
+                                                        >
+                                                            Remove Set
+                                                        </button>
+                                                    )}
                                             </div>
                                         )
                                     )}
@@ -439,8 +514,19 @@ const Workouts = () => {
                         </button>
 
                         <button type="submit">
-                            Save Workout
+                            {editingId
+                                ? "Update Workout"
+                                : "Save Workout"}
                         </button>
+
+                        {editingId && (
+                            <button
+                                type="button"
+                                onClick={resetForm}
+                            >
+                                Cancel Edit
+                            </button>
+                        )}
                     </form>
                 </section>
 
@@ -512,6 +598,24 @@ const Workouts = () => {
                                         {workout.notes}
                                     </p>
                                 )}
+
+                                <button
+                                    onClick={() =>
+                                        handleEdit(workout)
+                                    }
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    onClick={() =>
+                                        handleDelete(
+                                            workout._id
+                                        )
+                                    }
+                                >
+                                    Delete
+                                </button>
                             </div>
                         ))
                     )}

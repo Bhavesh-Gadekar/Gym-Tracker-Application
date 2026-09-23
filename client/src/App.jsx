@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Exercises from "./pages/Exercises.jsx";
 import Workouts from "./pages/Workouts.jsx";
+import Progress from "./pages/Progress.jsx";
+import Streak from "./pages/Streak.jsx";
 
 const App = () => {
     return (
@@ -43,6 +45,22 @@ const App = () => {
     element={
         <ProtectedRoute>
             <Workouts />
+        </ProtectedRoute>
+    }
+/>
+        <Route
+    path="/progress"
+    element={
+        <ProtectedRoute>
+            <Progress />
+        </ProtectedRoute>
+    }
+/>
+          <Route
+    path="/streak"
+    element={
+        <ProtectedRoute>
+            <Streak />
         </ProtectedRoute>
     }
 />
