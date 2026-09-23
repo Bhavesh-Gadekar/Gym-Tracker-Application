@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js"
 import authMiddleware from "./middleware/authMiddleware.js";
 import cookieParser from "cookie-parser";
 import exerciseRoutes from "./routes/exerciseRoutes.js";
+import workoutRoutes from "./routes/workoutRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/exercises", exerciseRoutes);
+app.use("/api/workouts", workoutRoutes);
 
 app.get("/api/protected", authMiddleware, (req, res) => {
     res.json({
