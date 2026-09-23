@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js"
 import authMiddleware from "./middleware/authMiddleware.js";
 import cookieParser from "cookie-parser";
+import exerciseRoutes from "./routes/exerciseRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -15,7 +16,9 @@ const PORT=process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
 app.use("/api/auth", authRoutes);
+app.use("/api/exercises", exerciseRoutes);
 
 app.get("/api/protected", authMiddleware, (req, res) => {
     res.json({
