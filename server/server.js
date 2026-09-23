@@ -2,17 +2,29 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js"
+import authMiddleware from "./middleware/authMiddleware.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 connectDB();
-const app = express();
-const PORT = process.env.PORT || 5000;
+const app=express();
+const PORT=process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use("/api/auth", authRoutes);
 
-app.get("/",(req, res) => {
+app.get("/api/protected", authMiddleware, (req, res) => {
+    res.json({
+        message: "You accessed a protected route",
+        userId: req.userId
+    });
+});
+
+app.get("/",(req,res) => {
     res.json({message: "Gym Tracker API is running"});
 });
 
